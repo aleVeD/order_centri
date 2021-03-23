@@ -1,7 +1,6 @@
 package com.geekshirt.orderservice.controllers;
 
 import com.geekshirt.orderservice.dto.OrderResponse;
-import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -62,8 +61,4 @@ public class OrderController {
         return new ResponseEntity<>(response1, HttpStatus.CREATED);
     }
 
-    @Getter
-    public static class OrderRequest {
-        private String acountId;
-    }
 }
