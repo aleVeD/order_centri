@@ -11,7 +11,7 @@ import java.util.Date;
 public class OrderResponse {
     private String orderId;
     private String status;
-    private String accoountId;
+    private String accountId;
     private Double totalAmount;
     private Double totalTax;
     private Date transactionDate;

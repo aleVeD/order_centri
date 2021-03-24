@@ -4,5 +4,5 @@ import lombok.Getter;
 
 @Getter
 public class OrderRequest {
-    private String acountId;
+    private String accountId;
 }

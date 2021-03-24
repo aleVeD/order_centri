@@ -17,7 +17,7 @@ public class OrderController {
         List<OrderResponse> orderList = new ArrayList<>();
         OrderResponse response = new OrderResponse();
         response.setOrderId("3432");
-        response.setAccoountId("new");
+        response.setAccountId("new");
         response.setStatus("pending");
         response.setTotalAmount(100.0);
         response.setTotalTax(10.0);
@@ -26,7 +26,7 @@ public class OrderController {
 
         OrderResponse response1 = new OrderResponse();
         response1.setOrderId("5454");
-        response1.setAccoountId("ju");
+        response1.setAccountId("jfdgdfg");
         response1.setStatus("pending");
         response1.setTotalAmount(136.0);
         response1.setTotalTax(12.0);
@@ -40,7 +40,7 @@ public class OrderController {
 
         OrderResponse response1 = new OrderResponse();
         response1.setOrderId(orderId);
-        response1.setAccoountId("ju");
+        response1.setAccountId("ju");
         response1.setStatus("pending");
         response1.setTotalAmount(136.0);
         response1.setTotalTax(12.0);
@@ -51,9 +51,9 @@ public class OrderController {
     @PostMapping("order/create")
     public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderRequest payload){
         OrderResponse response1 = new OrderResponse();
-        response1.setAccoountId(payload.getAcountId());
-        System.out.println(payload.getAcountId());
-        response1.setOrderId("83727");
+        response1.setAccountId(payload.getAccountId());
+        System.out.println(payload.getAccountId());
+        response1.setOrderId("899997");
         response1.setStatus("created");
         response1.setTotalAmount(126.0);
         response1.setTotalTax(19.0);
