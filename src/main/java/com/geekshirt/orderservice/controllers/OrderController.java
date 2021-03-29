@@ -1,6 +1,7 @@
 package com.geekshirt.orderservice.controllers;
-
 import com.geekshirt.orderservice.dto.OrderResponse;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,9 +10,11 @@ import java.util.ArrayList;
 
 import java.util.Date;
 import java.util.List;
-
+@Api
 @RestController
 public class OrderController {
+
+    @ApiOperation(value = "Retrieve all existed orders", notes = "This operations return all store orders")
     @GetMapping("/order")
     public ResponseEntity<List<OrderResponse>> findAll(){
         List<OrderResponse> orderList = new ArrayList<>();
@@ -34,7 +37,7 @@ public class OrderController {
         orderList.add(response1);
         return new ResponseEntity<>(orderList, HttpStatus.OK);
     }
-
+    @ApiOperation(value = "Retrieve an order based on Id", notes = "This operation return an order using its id")
     @GetMapping("/order/{id}")
     public ResponseEntity<OrderResponse> findById(@PathVariable("id") String orderId){
 
@@ -47,7 +50,7 @@ public class OrderController {
         response1.setTransactionDate(new Date());
         return new ResponseEntity<>(response1, HttpStatus.OK);
     }
-
+    @ApiOperation(value = "Create an order", notes = "This operation creates a new order")
     @PostMapping("order/create")
     public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderRequest payload){
         OrderResponse response1 = new OrderResponse();
