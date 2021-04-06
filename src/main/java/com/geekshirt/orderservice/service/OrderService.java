@@ -5,6 +5,7 @@ import com.geekshirt.orderservice.dto.AccountDto;
 import com.geekshirt.orderservice.dto.OrderRequest;
 import com.geekshirt.orderservice.dto.OrderResponse;
 import com.geekshirt.orderservice.entities.Order;
+import com.geekshirt.orderservice.util.OrderValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,8 +22,9 @@ public class OrderService {
     private CustomerServiceClient client;
 
     public Order createOrder(OrderRequest orderRequest){
+        OrderValidator.validateOrder(orderRequest);
         AccountDto account = client.findAccountById(orderRequest.getAccountId());
-        AccountDto dummyAccount = client.createDummyAccount();
+      /*  AccountDto dummyAccount = client.createDummyAccount();
         dummyAccount = client.createAccount(dummyAccount);
         dummyAccount.getAddress().setZipCode("386453");
         client.updateAccount(dummyAccount);
@@ -31,7 +33,7 @@ public class OrderService {
         log.info(accountD.toString());
 
         client.deleteAccount(dummyAccount);
-
+*/
         Order response1 = new Order();
         response1.setAccountId(orderRequest.getAccountId());
         response1.setOrderId("899997");

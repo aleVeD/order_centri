@@ -30,7 +30,7 @@ dependencies {
     implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'
     implementation group: 'io.springfox', name: 'springfox-bean-validators', version: '3.0.0'
     implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.4.0'
-    implementation group: 'org.modelmapper.extensions', name: 'modelmapper-spring', version: '2.4.0'
+
 }
 
 test {
