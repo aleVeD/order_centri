@@ -5,6 +5,8 @@ import com.geekshirt.orderservice.dto.AccountDto;
 import com.geekshirt.orderservice.dto.OrderRequest;
 import com.geekshirt.orderservice.dto.OrderResponse;
 import com.geekshirt.orderservice.entities.Order;
+import com.geekshirt.orderservice.exception.AccountNotFoundException;
+import com.geekshirt.orderservice.util.ExceptionMessagesEnum;
 import com.geekshirt.orderservice.util.OrderValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -23,7 +26,9 @@ public class OrderService {
 
     public Order createOrder(OrderRequest orderRequest){
         OrderValidator.validateOrder(orderRequest);
-        AccountDto account = client.findAccountById(orderRequest.getAccountId());
+
+        AccountDto account = client.findAccountById(orderRequest.getAccountId())
+                .orElseThrow(()-> new AccountNotFoundException(ExceptionMessagesEnum.ACCOUNT_NOT_FOUND.getValue()));
       /*  AccountDto dummyAccount = client.createDummyAccount();
         dummyAccount = client.createAccount(dummyAccount);
         dummyAccount.getAddress().setZipCode("386453");
