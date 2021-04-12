@@ -29,20 +29,28 @@ public class OrderController {
 
     @ApiOperation(value = "Retrieve all existed orders", notes = "This operations return all store orders")
     @GetMapping("/order")
-    public ResponseEntity<List<Order>> findAll(){
+    public ResponseEntity<List<OrderResponse>> findAll(){
         List<Order> orderList = orderService.findAllOrders();
 
         return new ResponseEntity<>(converter.convertEntityToDto(orderList), HttpStatus.OK);
     }
     @ApiOperation(value = "Retrieve an order based on Id", notes = "This operation return an order using its id")
+    @GetMapping("/orders/{id}")
+    public ResponseEntity<OrderResponse> findByOrderId(@PathVariable("id") String orderId){
+        Order order = orderService.findOrderByOrderId(orderId);
+        return new ResponseEntity<>( converter.convertEntityToDto(order), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Retrieve an order based on Id", notes = "This operation return an order using its id")
     @GetMapping("/order/{id}")
-    public ResponseEntity<Order> findById(@PathVariable("id") String orderId){
+    public ResponseEntity<OrderResponse> findById(@PathVariable("id") long orderId){
         Order order = orderService.findOrderById(orderId);
         return new ResponseEntity<>( converter.convertEntityToDto(order), HttpStatus.OK);
     }
+
     @ApiOperation(value = "Create an order", notes = "This operation creates a new order")
     @PostMapping("order/create")
-    public ResponseEntity<Order> createOrder(@RequestBody OrderRequest payload){
+    public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderRequest payload){
         Order order = orderService.createOrder(payload);
         return new ResponseEntity<>(converter.convertEntityToDto(order), HttpStatus.CREATED);
     }

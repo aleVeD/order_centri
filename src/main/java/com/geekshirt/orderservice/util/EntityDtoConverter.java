@@ -14,7 +14,6 @@ public class EntityDtoConverter {
     @Autowired
     private ModelMapper modelMapper;
 
-
     public OrderResponse convertEntityToDto(Order order){
         return modelMapper.map(order, OrderResponse.class);
     }
