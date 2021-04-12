@@ -1,4 +1,5 @@
 package com.geekshirt.orderservice.entities;
+import com.geekshirt.orderservice.util.OrderPaymentStatus;
 import com.geekshirt.orderservice.util.OrderStatus;
 import lombok.Data;
 
@@ -21,7 +22,7 @@ import java.util.List;
 @Data
 @Table(name = "ORDERS")
 @Entity
-public class Order {
+public class Order extends CommonEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -46,6 +47,12 @@ public class Order {
     @Temporal(TemporalType.TIMESTAMP)
     private Date transactionDate;
 
+    @Column(name = "PAYMENT_STATUS")
+    @Enumerated(value = EnumType.STRING)
+    private OrderPaymentStatus paymentStatus;
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "order")
     private List<OrderDetail> details;
+
+
 }

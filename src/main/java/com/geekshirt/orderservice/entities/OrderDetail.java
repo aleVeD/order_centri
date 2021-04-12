@@ -22,7 +22,7 @@ import javax.persistence.Table;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderDetail {
+public class OrderDetail extends CommonEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,6 +38,7 @@ public class OrderDetail {
     @Column(name = "UPC")
     private String upc;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+   // @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Order order;
 }

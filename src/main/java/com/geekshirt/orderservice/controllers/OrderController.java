@@ -9,12 +9,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-
-import java.util.Date;
 import java.util.List;
 @Api
 @RestController
@@ -48,11 +44,17 @@ public class OrderController {
         return new ResponseEntity<>( converter.convertEntityToDto(order), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Retrieve an order based on Id", notes = "This operation return an orders by accountId")
+    @GetMapping("/order/generated/{accountId}")
+    public ResponseEntity<List<OrderResponse>> findOrdersByAccountId(@PathVariable("accountId") String accountId){
+        List<Order> orders = orderService.findOrdersByAccountId(accountId);
+        return new ResponseEntity<>( converter.convertEntityToDto(orders), HttpStatus.OK);
+    }
+
     @ApiOperation(value = "Create an order", notes = "This operation creates a new order")
-    @PostMapping("order/create")
+    @PostMapping("/order/create")
     public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderRequest payload){
         Order order = orderService.createOrder(payload);
         return new ResponseEntity<>(converter.convertEntityToDto(order), HttpStatus.CREATED);
     }
-
 }

@@ -6,16 +6,19 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @Getter
+@EnableJpaAuditing
 @Configuration
 @PropertySource({"classpath:application.properties"})
 public class OrderServiceConfig {
-    @Value("customerservice.url")
+    @Value("${customerservice.url}")
     private String customerServiceUrl;
 
-    @Bean
-    public org.modelmapper.ModelMapper modelMapper(){
-        return new ModelMapper();
-    }
+    @Value("${paymentservice.url}")
+    private String paymentServiceUrl;
+
+    @Value("${inventoryservice.url}")
+    private String inventoryServiceUrl;
 }

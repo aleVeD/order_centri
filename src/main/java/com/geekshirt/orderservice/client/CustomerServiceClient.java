@@ -17,7 +17,6 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Optional;
 
 @Component
-
 public class CustomerServiceClient {
 
     @Autowired
