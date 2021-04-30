@@ -28,17 +28,17 @@ public class CustomerServiceClient {
         restTemplate = builder.build();
     }
 
-    public Optional<AccountDto> findAccountById(String accountId){
+    public Optional<AccountDto> findAccount(String accountId) {
         Optional<AccountDto> result = Optional.empty();
-        try{
-           result = Optional.ofNullable(restTemplate.getForObject(config.getCustomerServiceUrl() + "/{id}", AccountDto.class, accountId));
-        }catch (HttpClientErrorException ex){
-            if(ex.getStatusCode() != HttpStatus.NOT_FOUND){
+        try {
+            result = Optional.ofNullable(restTemplate.getForObject(config.getCustomerServiceUrl() + "/{id}", AccountDto.class, accountId));
+        }
+        catch (HttpClientErrorException ex)   {
+            if (ex.getStatusCode() != HttpStatus.NOT_FOUND) {
                 throw ex;
             }
         }
-
-        return  result;
+        return result;
     }
 
     public AccountDto createAccount(AccountDto account){

@@ -2,14 +2,13 @@ package com.geekshirt.orderservice.service;
 
 import com.geekshirt.orderservice.client.CustomerServiceClient;
 import com.geekshirt.orderservice.client.InventoryServiceClient;
-import com.geekshirt.orderservice.dto.AccountDto;
-import com.geekshirt.orderservice.dto.Confirmation;
-import com.geekshirt.orderservice.dto.OrderRequest;
+import com.geekshirt.orderservice.dto.*;
 import com.geekshirt.orderservice.entities.Order;
 import com.geekshirt.orderservice.entities.OrderDetail;
 import com.geekshirt.orderservice.exception.AccountNotFoundException;
 import com.geekshirt.orderservice.exception.OrderNotFoundException;
 import com.geekshirt.orderservice.exception.PaymentNotAcceptedException;
+import com.geekshirt.orderservice.producer.ShippingOrderProducer;
 import com.geekshirt.orderservice.repositories.OrderRepository;
 import com.geekshirt.orderservice.util.Constants;
 import com.geekshirt.orderservice.util.ExceptionMessagesEnum;
@@ -45,7 +44,8 @@ public class OrderService {
     @Autowired
     private InventoryServiceClient inventoryClient;
 
-
+    @Autowired
+    private ShippingOrderProducer shipmentMessageProducer;
 
    // @Autowired
    // private JpaOrderDAO jpaOrderDAO;
@@ -53,9 +53,10 @@ public class OrderService {
     @Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
     public Order createOrder(OrderRequest orderRequest) throws PaymentNotAcceptedException {
         OrderValidator.validateOrder(orderRequest);
-        log.info("Validated");
-        AccountDto account = client.findAccountById(orderRequest.getAccountId())
-                .orElseThrow(()-> new AccountNotFoundException(ExceptionMessagesEnum.ACCOUNT_NOT_FOUND.getValue()));
+
+        AccountDto account = client.findAccount(orderRequest.getAccountId())
+                .orElseThrow(() -> new AccountNotFoundException(ExceptionMessagesEnum.ACCOUNT_NOT_FOUND.getValue()));
+
         Order newOrder = initOrder(orderRequest);
         Confirmation confirmation = paymentService.processPayment(newOrder, account);
 
@@ -74,7 +75,7 @@ public class OrderService {
         inventoryClient.updateInventory(orderRequest.getItems());
 
         log.info("Sending Request to Shipping Service.");
-        //shipmentMessageProducer.send(newOrder.getOrderId(), account);
+        shipmentMessageProducer.send(newOrder.getOrderId(), account);
         return orderRepository.save(newOrder);
        // return jpaOrderDAO.save(newOrder);
     }
@@ -132,6 +133,18 @@ public class OrderService {
     public List<Order> findOrdersByAccountId(String accountId){
         Optional<List<Order>> orders = Optional.ofNullable(orderRepository.findOrderByAccountId(accountId));
         return  orders.orElseThrow(()->new OrderNotFoundException("Order not found"));
+    }
+
+    public void updateShipmentOrder(ShipmentOrderResponse response){
+        try{
+            Order order = findOrderById(response.getOrderId());
+            order.setStatus(OrderStatus.valueOf(response.getShippingStatus()));
+            orderRepository.save(order);
+        }catch (OrderNotFoundException orderNotFoundException) {
+            log.info("The following Order was not found {} with tracking id {}", response.getOrderId(), response.getTrackingId());
+        }catch(Exception e){
+            log.info("An error ocurred");
+        }
     }
 
 }

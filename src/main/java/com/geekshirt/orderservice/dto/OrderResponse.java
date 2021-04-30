@@ -1,6 +1,5 @@
 package com.geekshirt.orderservice.dto;
 
-import com.geekshirt.orderservice.entities.OrderDetail;
 import lombok.Getter;
 import lombok.Setter;
 
